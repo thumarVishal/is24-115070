@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BC Laws Search Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>BC Laws Search Tool</h1>
+
+        <form id="search-form">
+            <input type="text" id="search-query" placeholder="Enter a search term..." required>
+            <div class="button-container">
+                <button type="submit">Search</button>
+                <button type="button" id="reset-button">Reset</button>
+            </div>
+        </form>
+
+        <div id="results" class="results-section" style="display: none;">
+            <h2>Search Results</h2>
+            <ul id="results-list"></ul>
+        </div>
+
+        <div id="noResults" class="no-results-section" style="display: none;"></div>
+
+        <div id="summarize-section" class="summary-section" style="display: none;">
+            <h2>Summarize Document</h2>
+            <div id="summaryContainer"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
