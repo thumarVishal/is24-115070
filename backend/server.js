@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
@@ -5,6 +6,10 @@ const path = require('path');
 const xml2js = require('xml2js');
 const app = express();
 const port = 3000;
+const cors = require('cors');
+app.use(cors());
+
+const apiKey = process.env.OPENAI_API_KEY;
 
 app.use(express.static(path.resolve(__dirname, '../frontend')));
 app.get('/', (req, res) => {
@@ -33,6 +38,44 @@ app.get('/search', async (req, res) => {
     } catch (error) {
         console.error('Error fetching data from BC Laws API:', error);
         res.status(500).send('Error retrieving data from BC Laws API');
+    }
+});
+
+app.use(bodyParser.json());
+
+app.post('/summarize', async (req, res) => {
+
+
+    console.log('API Key:', apiKey);
+
+    const content = req.body.content;
+
+    if (!apiKey) {
+        return res.status(500).json({ error: "API Key is not defined." });
+    }
+
+    console.log('Request received with content:', content);
+
+    if (!content) {
+        return res.status(400).json({ error: 'Content is required.' });
+    }
+
+    try {
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: content }],
+            max_tokens: 100,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching summary:', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

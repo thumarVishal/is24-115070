@@ -42,22 +42,16 @@ document.getElementById('search-form').addEventListener('submit', async function
             });
 
             async function summarizeDocument(title) {
-                const apiKey = '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'; // Replace with your OpenAI API key
+                const summaryContainer = document.getElementById('summaryContainer');
 
                 const requestData = {
-                    model: 'gpt-3.5-turbo',
-                    messages: [{ role: 'user', content: `Summarize the following document: ${title}` }],
-                    max_tokens: 100,
+                    content: `Summarize the following document: ${title}`
                 };
 
                 try {
-                    summaryContainer.innerHTML = 'Loading summary...';
-                    summarizeSection.style.display = 'block';
-
-                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    const response = await fetch('http://localhost:3000/summarize', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${apiKey}`,
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(requestData),
@@ -68,13 +62,18 @@ document.getElementById('search-form').addEventListener('submit', async function
                     }
 
                     const jsonResponse = await response.json();
+
                     const summaryText = jsonResponse.choices[0].message.content.trim();
 
                     summaryContainer.innerHTML = `<h3>Summary:</h3><p>${summaryText}</p>`;
+
+                    document.getElementById('summarize-section').style.display = 'block';
                 } catch (error) {
                     summaryContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+                    console.error('Error fetching summary:', error);
                 }
             }
+
         } else {
             resultsSection.style.display = 'none';
             noResultsSection.style.display = 'block';
