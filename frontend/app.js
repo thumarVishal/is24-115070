@@ -4,7 +4,7 @@ document.getElementById('search-form').addEventListener('submit', async function
     const query = document.getElementById('search-query').value;
 
     try {
-        const response = await fetch(`https://your-backend-project.vercel.app/search?q=${query}`);
+        const response = await fetch(`https://is24-115070-backend.vercel.app/search?q=${query}`);
 
         // const response = await fetch(`http://localhost:3000/search?q=${query}`);
         const data = await response.json();
@@ -51,7 +51,7 @@ document.getElementById('search-form').addEventListener('submit', async function
                 };
 
                 try {
-                    const response = await fetch('https://your-backend-project.vercel.app/summarize', {
+                    const response = await fetch('https://is24-115070-backend.vercel.app/summarize', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
