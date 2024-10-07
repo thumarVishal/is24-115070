@@ -45,16 +45,11 @@ app.use(bodyParser.json());
 
 app.post('/summarize', async (req, res) => {
 
-
-    console.log('API Key:', apiKey);
-
     const content = req.body.content;
 
     if (!apiKey) {
         return res.status(500).json({ error: "API Key is not defined." });
     }
-
-    console.log('Request received with content:', content);
 
     if (!content) {
         return res.status(400).json({ error: 'Content is required.' });
